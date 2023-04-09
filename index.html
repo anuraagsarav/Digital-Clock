@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Digital Clock</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    </head>
+    <body>
+        <div class="digital-clock">
+            <i class="uil uil-ellipsis-v" id="active-menu"></i>
+            <ul class="dot-menu" id="active-menu">
+                <li class="menu-item" id="active-menu">
+                    <span class="clock-format-text" id="active-menu">24-hrs Mode</span>
+                    <div class="format-switch-btn" data-format="12" id="active-menu"></div>
+                </li>
+            </ul>
+            <div class="time">
+                <span class="hours">00</span>
+                <span class="dots">:</span>
+                <span class="minutes">00</span>
+                <div class="right-side">
+                    <span class="period">AM/PM</span>
+                    <span class="seconds">00</span>
+                </div>
+            </div>
+            <div class="calender">
+                <span class="month-name">Month</span>
+                <span class="day-number">00</span>
+                <span class="day-name">Day</span>
+                <span class="year">000</span>
+            </div>
+        </div>
+        
+        <script>
+            function clock(){
+                var today = new Date();
+
+                var hours = today.getHours();
+                var minutes = today.getMinutes();
+                var seconds = today.getSeconds();
+                let period = "AM";
+
+                if(hours >= 12){
+                    period = "PM";
+                }
+                
+                var formatValue = formatSwitchBtn.getAttribute("data-format");
+
+                if(formatValue === "12"){
+                hours = hours > 12 ? hours % 12 : hours;
+                }
+
+                if(hours < 10){
+                    hours = "0" + hours;
+                }
+                if(minutes < 10){
+                    minutes = "0" + minutes;
+                }
+                if(seconds < 10){
+                    seconds = "0" + seconds;
+                }
+
+                document.querySelector(".hours").innerHTML = hours;
+                document.querySelector(".minutes").innerHTML = minutes;
+                document.querySelector(".period").innerHTML = period;
+                document.querySelector(".seconds").innerHTML = seconds;
+            }
+
+            var updateClock = setInterval(clock, 1000);
+
+            var today = new Date();
+            const monthName = today.toLocaleString("default", {month: "short"});
+            const dayNumber = today.getDate();
+            const dayName = today.toLocaleString("default", {month: "long"});
+            const year = today.getFullYear();
+
+            document.querySelector(".month-name").innerHTML = monthName;
+            document.querySelector(".day-number").innerHTML = dayNumber;
+            document.querySelector(".day-name").innerHTML = dayName;
+            document.querySelector(".year").innerHTML = year;
+
+            const formatSwitchBtn = document.querySelector(".format-switch-btn");
+
+            formatSwitchBtn.addEventListener("click", () => {
+                formatSwitchBtn.classList.toggle("active");
+
+                var formatValue = formatSwitchBtn.getAttribute("data-format");
+
+                if(formatValue === "12"){
+                formatSwitchBtn.setAttribute("data-format", "24");
+            }else{
+                formatSwitchBtn.setAttribute("data-format", "12");
+            }
+
+            });
+
+            const dotmenuBtn = document.querySelector(".uil-ellipsis-v");
+            const dotMenu = document.querySelector(".dot-menu");
+
+            dotmenuBtn.addEventListener("click", () =>{
+                dotMenu.classList.toggle("active");
+            });
+
+            document.addEventListener("click", (e) => {
+                if(e.target.id !== "active-menu"){
+                    dotMenu.classList.remove("active");
+                }
+            })
+        </script>
+
+    </body>
+</html>
